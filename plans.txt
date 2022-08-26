@@ -1,0 +1,12 @@
+multiple schools
+super admin
+admin for each schools
+lecturer
+student
+
+reception will add students
+lecturers will add students to classes
+lecturers will give assignments
+students willl submit assognments
+lecturer will download assignents for each students
+display student mark for each subject
