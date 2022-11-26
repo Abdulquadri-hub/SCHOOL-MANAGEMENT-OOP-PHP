@@ -13,7 +13,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light p-2">
 <div class="container-fluid">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="<?=ROOT?>">
     <img src="<?=ROOT?>/asset/logo2.png" alt="Image" class="" style="width:50px">
     <?=Auth::getschool_name()?> 
     </a>
@@ -24,20 +24,31 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav"> 
         <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="<?=ROOT?>">DASHBOARD</a>
+        <a class="nav-link active" aria-current="page" href="<?=ROOT?>">DASHBOARD</a>
         </li>
+
+        <?php if(Auth::access('super_admin')): ?>
         <li class="nav-item">
         <a class="nav-link" href="<?=ROOT?>/Schools">SCHOOLS</a>
         </li>
+        <?php endif; ?>
+
+        <?php if(Auth::access('admin')): ?>
         <li class="nav-item">
         <a class="nav-link" href="<?=ROOT?>/Users">STAFF</a>
         </li>
+        <?php endif; ?>
+
+        <?php if(Auth::access('reception')): ?>
         <li class="nav-item">
         <a class="nav-link" href="<?=ROOT?>/Students">STUDENTS</a>
         </li>
+        <?php endif; ?>
+
         <li class="nav-item">
         <a class="nav-link" href="<?=ROOT?>/classes">CLASSES</a>
         </li>
+        
         <li class="nav-item">
         <a class="nav-link" href="<?=ROOT?>/tests">TESTS</a>
         </li>
@@ -46,7 +57,7 @@
 
         <ul class="navbar-nav ms-auto">
         <li class="nav-item dropdown dropdown-menu-end">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         <?=Auth::getlastname()?>    
         </a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">

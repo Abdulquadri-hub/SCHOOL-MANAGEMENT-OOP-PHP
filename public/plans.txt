@@ -10,3 +10,4 @@ lecturers will give assignments
 students willl submit assognments
 lecturer will download assignents for each students
 display student mark for each subject
+

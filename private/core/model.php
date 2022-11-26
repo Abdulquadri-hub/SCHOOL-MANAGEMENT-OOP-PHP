@@ -11,30 +11,23 @@ class Model extends Database
 
     function __construct()
     {
-        // check if the property is not set and then use it
         
         if (!property_exists($this, 'table'))
         {
-            $this->table = strtolower('User')."s";
-            
-        }
-        if (!property_exists($this, 'table'))
-        {
-            $this->table = strtolower('school')."s";
+            $this->table = strtolower(User::class)."s";
             
         }
     }
     
     public function first($column, $value)
     {
-        // run a query
+
         $column = addslashes($column);
         $query = "select * from $this->table where $column = :value";
         $data =  $this->query($query,[
             'value'=>$value
         ]);
 
-        // run func after select
 
         if(is_array($data))
         {
@@ -47,7 +40,6 @@ class Model extends Database
         }
         }
 
-        // return the first item
         if(is_array($data))
         {
             $data = $data[0];
@@ -55,10 +47,8 @@ class Model extends Database
         return $data;
     }
 
-    // interracting with db
     public function where($column, $value)
     {
-        // run a query
         $column = addslashes($column);
         $query = "select * from $this->table where $column = :value";
         return $this->query($query,[
@@ -68,7 +58,6 @@ class Model extends Database
 
     public function findAll()
     {
-        // run a query
         $query = "select * from $this->table";
         return $this->query($query);
 
@@ -76,7 +65,6 @@ class Model extends Database
 
     public function insert($data)
     {
-        // // remove unwanted columns
         if (property_exists($this, 'allowedCol'))
             {
                 foreach($data as $key => $column)
@@ -88,7 +76,6 @@ class Model extends Database
                 }
         }
 
-        // // run func before inserting
         if (property_exists($this, 'beforeInsert'))
         {
             foreach($this->beforeInsert as $func)
@@ -111,8 +98,6 @@ class Model extends Database
 
     public function update($id,$data)
     {
-        print_r($data);
-
         // run a query
         // set str to empty
         $str = "";
@@ -138,4 +123,3 @@ class Model extends Database
 
     }
 }
-// model->where('firstname', 'john')

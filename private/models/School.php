@@ -7,7 +7,7 @@ class School extends Modelsch
 {
 
     protected $table = 'schools';
-        // // if we want  ot run a specific func before inserting
+        // // if we want  ot allow a specific func before inserting
     protected $allowedCol = [
             'school',
             'date',
@@ -60,7 +60,7 @@ class School extends Modelsch
             return $data;
     }
 
-    // get user who created the sschool
+    // get user who created the school
     public function get_user($data)
     {
         // instantiate user
@@ -72,6 +72,5 @@ class School extends Modelsch
         }
             return $data;
     }
-
     
 }

@@ -7,6 +7,7 @@
         <h2 class="text-center">My school</h2>
         <img src="<?=ROOT?>/asset/logo2.png" alt="Image" class="d-block mx-auto" style="width:100px">
         <h3>Add User</h3>
+        
         <!-- get errors -->
         <?php if(count($errors) > 0): ?>
         <div class="alert alert-warning alert-dismissible fade show p-2" role="alert">

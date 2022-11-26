@@ -11,14 +11,16 @@
 
             <center><h5><?=esc(ucwords($row->class))?></h5></center>
                 <table class="table table-hover table-striped table-bordered">
-                <tr><th>Class Name:</th><td><?=esc($row->class)?></td></tr>
-                <tr><th>Created by:</th><td><?=esc($row->user->firstname)?> <?=esc($row->user->lastname)?></td></tr>
-                <tr><th>Date Created:</th><td><?=get_date($row->date)?></td></tr>
+                <tr><th>Created by:</th> <th>Date Created:</th></tr>
+                <tr>
+                    <td><?=esc($row->user->firstname)?> <?=esc($row->user->lastname)?></td>
+                    <td><?=get_date($row->date)?></td>
+                </tr>
 
                 </table>
             
         </div>
-        <br>
+        
         <div class="container-fluid">
         <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -32,14 +34,51 @@
     </li>
     </ul>
         
-    <nav class="navbar navbar-light bg-light">
-    <form class="form-inline">
-    <div class="input-group">
-    <span class="input-group-text" id="basic-addon1"><i class="fa fa-search">&nbsp</i></span>
-    <input type="text" class="form-control" placeholder="Search..." aria-label="Username" aria-describedby="basic-addon1" >
-    </div>
-    </form>
-</nav>
+
+
+        <?php
+        
+        switch ($page_tab) {
+            case 'lecturers':
+                # code...
+                include(views_path('class-tab-lecturers'));
+                break;
+
+            case 'students':
+                # code...
+                include(views_path('class-tab-students'));
+                break;
+
+            case 'tests':
+                include(views_path('class-tab-tests'));
+                break;
+
+            case 'lecturer-add':
+                include(views_path('class-tab-lecturers-add'));
+                break;
+
+            case 'lecturer-remove':
+                include(views_path('class-tab-lecturers-remove'));
+                break;
+
+            case 'student-add':
+                include(views_path('class-tab-students-add'));
+                break;
+
+            case 'student-remove':
+                include(views_path('class-tab-students-remove'));
+                break;
+
+            case 'test-add':
+                include(views_path('class-tab-tests-add'));
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        
+        ?>
 
     </div>
     <?php else: ?>

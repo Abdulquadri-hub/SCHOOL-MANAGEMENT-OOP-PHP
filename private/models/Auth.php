@@ -22,7 +22,7 @@ class Auth
             return true;
         }
 
-         return false;
+        return false;
     }
 
     public static function user()
@@ -39,7 +39,7 @@ class Auth
         $property = strtolower(str_replace("get", '', $method));
         if (isset($_SESSION['USER']->$property)) 
         {
-           return $_SESSION['USER']->$property;
+            return $_SESSION['USER']->$property;
         }
         return 'Unknown';
     }
@@ -63,6 +63,69 @@ class Auth
             }
             return true;
         }
+        return false;
+    }
+
+    // create priviledges
+    public static function access($rank = 'students')
+    {
+        if (!isset($_SESSION['USER'])) 
+        {
+            return false;
+        }
+
+        // get the rank that logged_in
+        $logged_in_rank = $_SESSION['USER']->rank;
+
+        // Set Priviledges
+        $RANK['super_admin'] = ['super_admin', 'admin', 'lecturer', 'reception', 'students'];
+        $RANK['admin']       = ['admin', 'lecturer', 'reception', 'students'];
+        $RANK['lecturer']    = ['lecturer', 'reception', 'students'];
+        $RANK['reception']   = ['reception', 'students'];
+        $RANK['student']     = ['student'];
+
+        // no set
+        if (!isset($RANK[$logged_in_rank])) 
+        {
+            return false;
+        }
+
+        // rank in logged_in_rank
+        if (in_array($rank, $RANK[$logged_in_rank])) 
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    // improve security
+    public static function i_own_content($row)
+    {
+        // 
+        if (!isset($_SESSION['USER']->user_id)) 
+        {
+            return false;
+        }
+
+        // 
+        if (isset($row->user_id)) 
+        {
+            if ($_SESSION['USER']->user_id == $row->user_id)
+            {
+                return true;
+            }
+        }
+
+        // set who can delete
+        $allowed = ['super_admin', 'admin'];
+
+        // 
+        if (in_array($_SESSION['USER']->rank, $allowed)) 
+        {
+            return true;
+        }
+
         return false;
     }
 

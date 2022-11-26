@@ -66,3 +66,13 @@ function get_image($image,$gender = 'female')
     }
     return $image;
 }
+
+function views_path($include){
+
+    if (file_exists("../private/views/includes/". $include . ".inc.php"))
+    {
+        return ("../private/views/includes/". $include . ".inc.php");
+    }else {
+        return ("../private/views/404.view.php");
+    }
+}

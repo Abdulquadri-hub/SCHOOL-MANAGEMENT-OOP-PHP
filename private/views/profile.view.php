@@ -16,6 +16,17 @@
             <div class="col-sm-4 col-md-3">
     <img src="<?=$image?>" alt="Image" class="d-block mx-auto rounded-circle" style="width:160px">
                 <h5 class="text-center"><?=esc($row->firstname)?> <?=esc($row->lastname)?></h5>
+                <div class="text-center">
+                <?php if(Auth::access('lecturer') || Auth::i_own_content($row)):?>
+                <a class="text-decoration-none" href="<?=ROOT?>/profile/edit/<?=$row->user_id?>">
+                    <button class="btn-sm btn-success">Edit</button>
+                </a>
+
+                <a  href="<?=ROOT?>/profile/delete/<?=$row->user_id?>">
+                    <button class="btn-sm btn-danger">Delete </button>
+                </a>
+                <?php endif; ?>
+                </div>
             </div>
             <div class="col-sm-3 col-md-9 bg-light p-2">
                 <table class="table table-hover table-striped table-bordered">
@@ -31,27 +42,52 @@
             </div>
         </div>
         <br>
-        <div class="container-fluid">
-        <ul class="nav nav-tabs">
-        <li class="nav-item">
+<div class="container-fluid">
+    <ul class="nav nav-tabs">
+
+
     <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Basic Info</a>
+    <a class="nav-link <?=$page_tab =='info'?'active':'' ?> " aria-current="page" href="<?=ROOT?>/profile/<?=$row->user_id?>/?tab=info">Basic Info</a>
     </li>
+
+    <!--  -->
+    <?php if(Auth::access('lecturer') || Auth::i_own_content($row)):?>
     <li class="nav-item">
-    <a class="nav-link" href="#">Classes</a>
+        <a class="nav-link <?=$page_tab=='classes'?'active':''?> " href="<?=ROOT?>/profile/<?=$row->user_id?>/?tab=classes">Classes</a>
     </li>
-    <a class="nav-link" href="#">Tests</a>
+    
+    <li class="nav-item">
+    <a class="nav-link <?=$page_tab=='tests'?'active':''?> " href="<?=ROOT?>/profile/<?=$row->user_id?>/?tab=tests">Tests</a>
     </li>
+    <?php endif; ?>
     </ul>
         
-    <nav class="navbar navbar-light bg-light">
-    <form class="form-inline">
-    <div class="input-group">
-    <span class="input-group-text" id="basic-addon1"><i class="fa fa-search">&nbsp</i></span>
-    <input type="text" class="form-control" placeholder="Search..." aria-label="Username" aria-describedby="basic-addon1" >
-    </div>
-    </form>
-</nav>
+
+    <?php
+
+    switch ($page_tab) {
+        case 'info':
+            include(views_path('profile-tab-info'));
+            break;
+
+        case 'classes':
+            if(Auth::access('lecturer') || Auth::i_own_content($row)){
+                include(views_path('profile-tab-classes'));
+            }else {
+                include(views_path('access-denied'));
+            }
+            break;
+
+        case 'tests':
+            include(views_path('profile-tab-tests'));
+            break;
+        
+        default:
+            # code...
+            break;
+    }
+
+    ?>
 
     </div>
     <?php else: ?>

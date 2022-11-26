@@ -5,12 +5,16 @@
 <?php $this->view('includes/crumbs',['crumbs'=>$crumbs]);?>
 <!-- search -->
 <nav class="navbar navbar-light bg-light">
-    <form class="form-inline">
-    <div class="input-group">
-    <span class="input-group-text" id="basic-addon1"><i class="fa fa-search">&nbsp</i></span>
-    <input type="text" class="form-control" placeholder="Search..." aria-label="Username" aria-describedby="basic-addon1" >
-    </div>
+    <form class="form-inline" method="GET">
+        <div class="input-group">
+            <button class="input-group-text" id="basic-addon1">
+                <i class="fa fa-search">&nbsp</i>
+            </button>
+            <input type="text" value="" name="find" class="form-control" placeholder="Search..." aria-label="Username" aria-describedby="basic-addon1" >
+            
+        </div>
     </form>
+
     <a href="<?=ROOT?>/signup">
             <button class="btn btn-sm btn-primary"><i class="fa fa-plus"></i>Add New</button>
     </a>
@@ -21,25 +25,16 @@
     <?php if($rows):?>
     <?php foreach($rows as $row):?> 
 
-                <?php 
-                    $image = get_image($row->image,$row->gender);
-                ?>
+        <?php include(views_path('user')) ?>
 
-    <div class="card m-2 shadow" style="max-width: 14rem;min-width:14rem;">
-    <div class="card-header">User Profile</div>
-    <img src="<?=$image?>" alt="card-img-top" class="card-img-top" style=" ">
-    <div class="card-body">
-    <h5 class="card-title"><?=$row->firstname?> <?=$row->lastname?></h5>
-    <p class="card-text"><?=str_replace("_", " ", $row->rank)?></p>
-    <a href="<?=ROOT?>/profile/<?=$row->user_id?>" class="btn btn-primary">Profile</a>
-    </div>
-    </div>
     <?php endforeach;?>
     <?php else:?>
         <h6>No staff members were found at this time!</h6>
     <?php endif;?>
+    
     </div>
 
+    <?php $pager->display() ?>
 
     </div>
 

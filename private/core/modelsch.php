@@ -18,6 +18,36 @@ class Modelsch extends Database
             
         }
     }
+
+    public function first($column, $value)
+    {
+        // run a query
+        $column = addslashes($column);
+        $query = "select * from $this->table where $column = :value";
+        $data =  $this->query($query,[
+            'value'=>$value
+        ]);
+
+        // run func after select
+
+        if(is_array($data))
+        {
+        if (property_exists($this, 'afterSelect'))
+        {
+            foreach($this->afterSelect as $func)
+            {
+                $data = $this->$func($data);
+            }
+        }
+        }
+
+        // return the first item
+        if(is_array($data))
+        {
+            $data = $data[0];
+        }
+        return $data;
+    }
     
     // interracting with db
     public function where($column, $value)
@@ -130,4 +160,3 @@ class Modelsch extends Database
 
     }
 }
-// model->where('firstname', 'john')

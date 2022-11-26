@@ -12,7 +12,6 @@ class Database
         if (!$conn = new PDO($string,DBUSER,DBPASS)) {
             die("could no connect to database");
         }
-
         return $conn;
     }
 
@@ -20,7 +19,7 @@ class Database
     public function query($query, $data = array(), $data_type = "object")
     {
         $conn = $this->connect();
-        // prepare the query
+        // prepare the query7
         $stmt = $conn->prepare($query);
 
         if ($stmt) {
@@ -32,15 +31,20 @@ class Database
                     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
 
+                if (property_exists($this, 'afterSelect'))
+                {
+                    foreach($this->afterSelect as $func)
+                    {
+                        $data = $this->$func($data);
+                    }
+                }
+
                 if (is_array($data) && count($data) > 0) {
                     return $data;
                 }
-                //return true;
             }
             
         }
-
-        // if any of the if stmt fails
         return false;
     }
 }

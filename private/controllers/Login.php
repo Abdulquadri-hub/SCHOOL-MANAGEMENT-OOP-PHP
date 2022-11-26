@@ -14,19 +14,22 @@ class Login extends Controller
 
         if (count($_POST) > 0) 
         {
-          $user = new User();
-          if($row = $user->where('email', $_POST['email']))
-          {
-              $row = $row[0];
-              if (password_verify($_POST['password'], $row->password)) 
-              {
-                
-                  Auth::loginUser($row);
-                  $this->redirect('/home');
-              }
+            $user = new User();
+        if($row = $user->where('email', $_POST['email']))
+            {
+                $row = $row[0];
+                if (password_verify($_POST['password'], $row->password)) 
+            {
+                $school = new School();
+                $school_row = $school->first('school_id',$row->school_id);
+                $row->school_name = $school_row->school;
+
+                Auth::loginUser($row);
+                $this->redirect('/home');
+            }
             
-          }  
-          $errors['email'] = "Wrong Email or Password";
+            }  
+            $errors['email'] = "Wrong Email or Password";
         }
         
 
