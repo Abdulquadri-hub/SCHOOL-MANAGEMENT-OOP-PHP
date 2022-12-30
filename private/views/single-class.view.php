@@ -30,8 +30,11 @@
     <li class="nav-item">
     <a class="nav-link <?=$page_tab=='students'?'active':'';?> " href="<?=ROOT?>/single_class/<?=$row->class_id?>?tab=students">Students</a>
     </li>
-    <a class="nav-link <?=$page_tab=='Tests'?'active':'';?> " href="<?=ROOT?>/single_class/<?=$row->class_id?>?tab=tests">Tests</a>
+    <?php if(Auth::access('lecturer')): ?>
+    <li class="nav-item">
+    <a class="nav-link <?=$page_tab=='tests'?'active':'';?> " href="<?=ROOT?>/single_class/<?=$row->class_id?>?tab=tests">Tests</a>
     </li>
+    <?php endif; ?>
     </ul>
         
 
@@ -50,27 +53,60 @@
                 break;
 
             case 'tests':
-                include(views_path('class-tab-tests'));
-                break;
-
-            case 'lecturer-add':
-                include(views_path('class-tab-lecturers-add'));
-                break;
-
-            case 'lecturer-remove':
-                include(views_path('class-tab-lecturers-remove'));
-                break;
-
-            case 'student-add':
-                include(views_path('class-tab-students-add'));
-                break;
-
-            case 'student-remove':
-                include(views_path('class-tab-students-remove'));
+                if(Auth::access('lecturer') )
+                {
+                    include(views_path('class-tab-tests'));
+                }else {
+                    include(views_path('access-denied'));
+                }
                 break;
 
             case 'test-add':
-                include(views_path('class-tab-tests-add'));
+                include(views_path('class-tab-test-add'));
+                break;
+
+            case 'test-edit':
+                include(views_path('class-tab-test-edit'));
+                break;
+
+            case 'test-delete':
+                include(views_path('class-tab-test-delete'));
+                break;
+
+            case 'lecturer-add':
+                if(Auth::access('lecturer') )
+                {
+                    include(views_path('class-tab-lecturers-add'));
+                }else {
+                    include(views_path('access-denied'));
+                }
+                break;
+
+            case 'lecturer-remove':
+                if(Auth::access('lecturer') )
+                {
+                    include(views_path('class-tab-lecturers-remove'));
+                }else {
+                    include(views_path('access-denied'));
+                }
+                break;
+
+            case 'student-add':
+                if(Auth::access('lecturer') )
+                {
+                    include(views_path('class-tab-students-add'));
+                }else {
+                    include(views_path('access-denied'));
+                }
+                break;
+
+            case 'student-remove':
+                if(Auth::access('lecturer') )
+                {
+                    include(views_path('class-tab-students-remove'));
+                }else {
+                    include(views_path('access-denied'));
+                }
                 break;
 
             default:
@@ -82,7 +118,7 @@
 
     </div>
     <?php else: ?>
-        <center><h6>That class was not found!</h6></center>
+        <center><h6 >That class was not found!</h6></center>
     <?php endif; ?>
     </div>
 

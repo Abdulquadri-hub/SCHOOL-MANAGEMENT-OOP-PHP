@@ -1,7 +1,8 @@
 <?php
 
-class Class_lecturer extends Class_lecturer_model{
+class Class_lecturer extends Model{
 
+    protected $table = "class_lecturers";
         // allowed [columns] 
         protected $allowedCol = [
             'user_id',

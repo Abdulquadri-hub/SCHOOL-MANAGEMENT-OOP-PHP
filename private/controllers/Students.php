@@ -16,7 +16,7 @@ class Students extends Controller
         $user = new User();
 
         // paginate
-        $limit = 1;
+        $limit = 3;
         $pager = new Pager($limit);
         $offset = $pager->offset;
         

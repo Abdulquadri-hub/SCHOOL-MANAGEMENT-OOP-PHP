@@ -40,7 +40,7 @@
 
     <?php endforeach;?>
     <?php else:?>
-        <h4>No classes found at this time</h4>
+        <tr><td colspan="6"><center>No classes found at this time</center></td></tr>
         <?php endif;?>
         </table>
     </div>

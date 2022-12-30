@@ -53,6 +53,14 @@ class Single_class extends Controller
                     where class_id = :class_id && disabled = 0 limit $limit offset $offset";
                     $students = $student->query($query,['class_id'=>$id]);
                     $data['students'] = $students;
+                }else {
+                    if ($page_tab == 'tests') {
+                        // display tests
+                        $query = "select * from tests 
+                        where class_id = :class_id limit $limit offset $offset";
+                        $tests = $student->query($query,['class_id'=>$id]);
+                        $data['tests'] = $tests;
+                    }
                 }
             }
         }
@@ -432,6 +440,164 @@ class Single_class extends Controller
             $data['errors']  = $errors;
     
             $this->view('single-class',$data);
+    }
+
+    // add test
+    public function test_add($id = '')
+    {
+        if (!Auth::loggedIn()) 
+        {
+            $this->redirect('login');
+        }
+
+        $errors = [];
+
+        $classes = new Classes_model();
+        $row = $classes->first('class_id',$id);#row for the data 
+
+
+        $crumbs[] = ['Dashboard', ''];
+        $crumbs[] = ['classes', 'classes'];
+        
+        if($row)
+        {
+            $crumbs[] = [$row->class,''];
+        }
+
+        $page_tab = 'test-add';
+        $test = new Test();
+
+        if (count($_POST) > 0) 
+        {
+            if ($test->validate($_POST)) {
+
+                $arr = array();
+                
+                $arr['test'] = $_POST['test'];
+                $arr['description'] = $_POST['description'];
+                $arr['class_id'] = $id;
+                $arr['disabled'] = 0;
+                $arr['date'] = date("Y-m-d H:i:s");
+
+                $test->insert($arr);
+
+                $this->redirect("single_class/".$id."?tab=tests");
+            }else {
+                $errors = $test->errors;
+            }
+
+        }
+
+        $data['row']      = $row;
+        $data['crumbs']   = $crumbs;
+        $data['page_tab'] = $page_tab;
+        $data['errors']  = $errors;
+
+        $this->view('single-class',$data);
+    }
+
+    // edit test
+    public function test_edit($id = '', $test_id = '')
+    {
+        if (!Auth::loggedIn()) 
+        {
+            $this->redirect('login');
+        }
+
+        $errors = [];
+
+        $classes = new Classes_model();
+        $row = $classes->first('class_id',$id);#row for the data 
+
+
+        $crumbs[] = ['Dashboard', ''];
+        $crumbs[] = ['classes', 'classes'];
+        
+        if($row)
+        {
+            $crumbs[] = [$row->class,''];
+        }
+
+        $page_tab = 'test-edit';
+        $test = new Test();
+
+        $test_row = $test->first('test_id', $test_id);
+
+        if (count($_POST) > 0) 
+        {
+            if ($test->validate($_POST)) {
+
+                $arr = array();
+                
+                $arr['test'] = $_POST['test'];
+                $arr['description'] = $_POST['description'];
+                $arr['disabled'] = $_POST['disabled'];
+
+                $test->update($test_row->id,$arr);
+
+                $this->redirect("single_class/test_edit/".$id."/".$test_id."?tab=test-edit");
+            }else {
+                $errors = $test->errors;
+            }
+
+        }
+
+        $data['row']      = $row;
+        $data['test_row'] = $test_row;
+        $data['crumbs']   = $crumbs;
+        $data['page_tab'] = $page_tab;
+        $data['errors']   = $errors;
+
+        $this->view('single-class',$data);
+    }
+
+    // delete test
+    public function test_delete($id = '', $test_id = '')
+    {
+        if (!Auth::loggedIn()) 
+        {
+            $this->redirect('login');
+        }
+
+        $errors = [];
+
+        $classes = new Classes_model();
+        $row = $classes->first('class_id',$id);#row for the data 
+
+
+        $crumbs[] = ['Dashboard', ''];
+        $crumbs[] = ['classes', 'classes'];
+        
+        if($row)
+        {
+            $crumbs[] = [$row->class,''];
+        }
+
+        $page_tab = 'test-delete';
+        $test = new Test();
+
+        $test_row = $test->first('test_id', $test_id);
+
+        if (count($_POST) > 0) 
+        {
+            if ($test->validate($_POST)) {
+
+                $test->delete($test_row->id);
+
+                $this->redirect("single_class/".$id."?tab=tests");
+            }else {
+                $errors = $test->errors;
+            }
+
+        }
+
+        $data['row']      = $row;
+        $data['test_row'] = $test_row;
+        $data['crumbs']   = $crumbs;
+        $data['page_tab'] = $page_tab;
+        $data['errors']   = $errors;
+
+        $this->view('single-class',$data);
     }
 
 }

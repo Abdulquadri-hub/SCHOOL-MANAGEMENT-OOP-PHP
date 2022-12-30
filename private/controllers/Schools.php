@@ -16,10 +16,11 @@ class Schools extends Controller
         $school = new School();
 
         $data = $school->findAll();
+        
 
         $crumbs[] = ['Dashboad',''];
         $crumbs[] = ['Schools','Schools'];
-
+        
         if (Auth::access('super_admin')) {
         $this->view('schools',[
             'rows'=>$data,

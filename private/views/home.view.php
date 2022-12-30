@@ -24,6 +24,7 @@
         <div class="row justify-content-center">
 
         <!-- Schools -->
+            <?php if(Auth::access('super_admin')): ?>
             <div class="card col-3 shadow rounded m-4 p-0 border">
             <a href="<?=ROOT?>/schools">
                 <div class="card-header">SCHOOLS</div>
@@ -33,8 +34,10 @@
                 <div class="card-footer">View all schools</div>
             </a>
             </div>
+            <?php endif; ?>
 
             <!-- Staff -->
+            <?php if(Auth::access('admin')): ?>
             <div class="card col-3 shadow rounded m-4 p-0 border">
             <a href="<?=ROOT?>/users">
                 <div class="card-header">STAFF</div>
@@ -44,8 +47,10 @@
                 <div class="card-footer">View all staff member</div>
             </a>
             </div>
+            <?php endif; ?>
 
             <!-- Students -->
+            <?php if(Auth::access('reception')): ?>
             <div class="card col-3 shadow rounded m-4 p-0 border">
             <a href="<?=ROOT?>/students">
                 <div class="card-header">STUDENTS</div>
@@ -55,6 +60,7 @@
                 <div class="card-footer">View all students</div>
             </a>
             </div>
+            <?php endif; ?>
 
             <!-- Classes -->
             <div class="card col-3 shadow rounded m-4 p-0 border">
@@ -78,6 +84,7 @@
             </a>
             </div>
 
+            <?php if(Auth::access('admin')): ?>
             <!-- Statitics -->
             <div class="card col-3 shadow rounded m-4 p-0 border">
             <a href="<?=ROOT?>/statistcs">
@@ -88,7 +95,9 @@
                 <div class="card-footer">View Statitics</div>
             </a>
             </div>
+            <?php endif; ?>
 
+            <?php if(Auth::access('admin')): ?>
             <!-- Settings -->
             <div class="card col-3 shadow rounded m-4 p-0 border">
             <a href="<?=ROOT?>/settings">
@@ -99,6 +108,7 @@
                 <div class="card-footer">View settings</div>
             </a>
             </div>
+            <?php endif; ?>
 
             <!-- Logout -->
             <div class="card col-3 shadow rounded m-4 p-0 border">

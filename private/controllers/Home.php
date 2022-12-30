@@ -19,4 +19,16 @@ class Home extends Controller
 
         $this->view('home',['rows'=>$data]);
     }
+
+    protected function get_primary_key($table)
+    {
+        $query = "SHOW KEYS FROM $table WHERE key_name = PRIMARY";
+        $db = new Database();
+        $data = $db->query($query);
+        if (!empty($data[0])) 
+        {
+            return $data[0]->Column_name;
+        }
+        return 'id';
+    }
 }

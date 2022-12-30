@@ -19,11 +19,23 @@ class Modelsch extends Database
         }
     }
 
-    public function first($column, $value)
+    protected function get_primary_key($table)
+    {
+        $query = "SHOW KEYS FROM $table WHERE key_name = 'PRIMARY'";
+        $db = new Database();
+        $data = $db->query($query);
+        if (!empty($data[0])) 
+        {
+            return $data[0]->Column_name;
+        }
+        return 'id';
+    }
+    public function first($column, $value, $orderby = 'desc')
     {
         // run a query
         $column = addslashes($column);
-        $query = "select * from $this->table where $column = :value";
+        $primary_key = $this->get_primary_key($this->table);
+        $query = "select * from $this->table where $column = :value order by $primary_key $orderby";
         $data =  $this->query($query,[
             'value'=>$value
         ]);
@@ -50,11 +62,12 @@ class Modelsch extends Database
     }
     
     // interracting with db
-    public function where($column, $value)
+    public function where($column, $value, $orderby = 'desc')
     {
         // run a query
         $column = addslashes($column);
-        $query = "select * from $this->table where $column = :value";
+        $primary_key = $this->get_primary_key($this->table);
+        $query = "select * from $this->table where $column = :value order by $primary_key $orderby";
         $data =  $this->query($query,[
             'value'=>$value
         ]);
@@ -74,10 +87,11 @@ class Modelsch extends Database
         return $data;
     }
 
-    public function findAll()
+    public function findAll($orderby = 'desc')
     {
         // run a query
-        $query = "select * from $this->table";
+        $primary_key = $this->get_primary_key($this->table);
+        $query = "select * from $this->table order by $primary_key $orderby";
         $data =  $this->query($query);
 
         
@@ -133,7 +147,7 @@ class Modelsch extends Database
 
     public function update($id,$data)
     {
-        print_r($data);
+        
 
         // run a query
         // set str to empty
@@ -148,6 +162,7 @@ class Modelsch extends Database
         // set $id as array
         $data['id'] = $id;
         $query = "update $this->table set $str where id = :id";
+        // print_r($query);
         return $this->query($query,$data);
     }
 

@@ -16,6 +16,8 @@ class User extends Model
             'gender',
             'date',
             'rank',
+            'image',
+            'school_id',
         ];
 
     // if we want  ot run a specific func before inserting
@@ -25,11 +27,18 @@ class User extends Model
         'hash_password',
     ];
 
-    public function validate($DATA) 
+    // if we want  ot run a specific func before inserting
+    protected $beforeUpdate = [
+        'hash_password',
+    ];
+
+    public function validate($DATA,$id = '') 
     {
 
         $this->errors = array();
         // check for password match
+        if (isset($DATA['password'])) {
+            # code...
         if (empty($DATA['password']) || $DATA['password'] != $DATA['password2']) {
             
             $this->errors['password'] = "The pasword do not match";
@@ -39,6 +48,8 @@ class User extends Model
             
             $this->errors['password'] = "Password must be at least 8 character long";
         }
+    }
+
         // check firstname
         if (empty($DATA['firstname']) || !preg_match("/^[a-zA-Z ]+$/", $DATA['firstname'])) {
             
@@ -52,15 +63,26 @@ class User extends Model
         }
 
         // check email
-        if (empty($DATA['email']) || !filter_var( $DATA['email'],FILTER_VALIDATE_EMAIL)) {
+            if (empty($DATA['email']) || !filter_var( $DATA['email'],FILTER_VALIDATE_EMAIL)) {
             
-            $this->errors['email'] = "E-mail is not valid ";
-        }
+                $this->errors['email'] = "E-mail is not valid ";
+            }
+
         
         // check if email exists
-        if ($this->where('email', $DATA['email'])) {
-            
-            $this->errors['email'] = "E-mail already Exists";
+        if (trim($id) == "") {
+            if ($this->where('email', $DATA['email'])) 
+            {
+                $this->errors['email'] = "E-mail already Exists";
+            }
+        }else {
+            if ($this->query("select * from users where email = :email && user_id != :id",[
+                'email'=>$DATA['email'],
+                'id'=>$id
+                ])) 
+            {
+                $this->errors['email'] = "E-mail already Exists";
+            }
         }
         
         // check gender
@@ -108,7 +130,10 @@ class User extends Model
     // function to hash password
     public function hash_password($data)
     {
-        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        if(isset($data['password']))
+        {
+            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        }
         return $data;
     }
 

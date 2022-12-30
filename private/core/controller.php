@@ -6,6 +6,11 @@
  */
 class Controller 
 {
+    public function get_controllers()
+    {
+        return strtolower($this::class);
+    }
+    
     public function View($view,$data = array()) 
     {
         // if there is a valid array

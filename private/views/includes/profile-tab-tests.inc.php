@@ -9,4 +9,11 @@
 </div>
 </form>
 </nav>
+<?php //echo "<pre>"; ?>
+<?php if($row->rank == "student"): ?>
+    <?php include(views_path('marked')); ?>
+    <?php else: ?>
+    <?php include(views_path('tests')); ?>
+<?php endif; ?>
+
 

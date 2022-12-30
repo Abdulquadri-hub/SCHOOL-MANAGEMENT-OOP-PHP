@@ -3,7 +3,7 @@
 /**
  * Classes model
  */
-class Classes_model extends Modelclass
+class Classes_model extends Model
 {
 
     protected $table = "classes";

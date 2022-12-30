@@ -12,21 +12,25 @@
                     $image = get_image($row->image,$row->gender);
                 ?>
 
+        <form action="" method="post" enctype="multipart/form-data">
         <div class="row">
             <div class="col-sm-4 col-md-3">
     <img src="<?=$image?>" alt="Image" class="d-block mx-auto rounded-circle" style="width:160px">
 
                 <div class="text-center mt-4">
-                <?php if(Auth::access('lecturer') || Auth::i_own_content($row)):?>
-                    <button class="btn-sm btn-info">Browse image</button>
+                <?php if(Auth::access('admin') || (Auth::access('reception') && $row->rank == "student")):?>
+                    <label for="browse_image" class="btn-sm btn-info">
+                    <input onchange="display_image_name(this.files[0].name)" type="file" id="browse_image" name="image" style="display: none;">
+                    Browse image
+                    </label>
+                    <small class="text-muted" id="file_info"></small>
                 <?php endif; ?>
                 </div>
 
             </div>
             <div class="col-sm-3 col-md-9 bg-light p-2">
-            <form action="" method="post">
+            
         <div class="p-4 mx-auto shadow rounded">
-        
         <!-- get errors -->
         <?php if(count($errors) > 0): ?>
         <div class="alert alert-warning alert-dismissible fade show p-2" role="alert">
@@ -72,13 +76,20 @@
 
 
         </div>
-    </form>
+
             </div>
         </div>
+            </form>
         <br>
     <?php else: ?>
         <center><h6>That profile was not found!</h6></center>
     <?php endif; ?>
     </div>
 
+    <script>
+        function display_image_name(file_name)
+        {
+            document.querySelector("#file_info").innerHTML = "<b><br>Selected image: <b><br>" + file_name;
+        }
+    </script>
     <?php $this->view('includes/footer'); ?>

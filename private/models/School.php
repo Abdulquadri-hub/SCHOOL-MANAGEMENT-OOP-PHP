@@ -3,7 +3,7 @@
 /**
  * school model
  */
-class School extends Modelsch
+class School extends Model
 {
 
     protected $table = 'schools';
